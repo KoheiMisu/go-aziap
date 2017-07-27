@@ -1,44 +1,48 @@
 package B27
 
 import (
-	"fmt"
+	"strings"
+	"strconv"
 )
 
 type Cards map[int]Card
 
 type FieldOfCards map[int]Cards
 
-//type Table struct {
-//	 field []FieldOfCards
-//}
-
 type Table struct {
-	field Cards
+	field FieldOfCards
 }
 
 func NewTable(length int, side int, cards []string) *Table {
 	t := new(Table)
-	t.field = make(Cards)
+	t.field = make(FieldOfCards)
 
 	for i := 1; i <= length; i++ {
-		//sideValues := strings.Split(cards[i-1], " ")
+		t.field[i] = make(Cards)
+		sideValues := strings.Split(cards[i-1], " ")
 
 		for j := 1; j <= side; j++ {
-			//cards := make(Cards)
-
-
-			//field := Cards{j: *NewCard(1)}
-			//intVal, _ := strconv.Atoi(sideValues[j-1])
-			t.field[i] = *NewCard(1)
-			//fmt.Printf("%v\n", t.field)
-			//t.field[i] = make(FieldOfCards)
-			//t.field[i][j] = *NewCard(intVal)
-			//fmt.Printf("%v\n", field)
-			//t.field[i] = field
+			intVal, _ := strconv.Atoi(sideValues[j-1]) // string to int
+			t.field[i][j] = *NewCard(intVal)
 		}
 	}
 
-	fmt.Printf("%v\n", t.field)
-
 	return t
+}
+
+func (t *Table) isCardSame(content []string) bool {
+	if t.getCardNumber(content[0], content[1]) == t.getCardNumber(content[2], content[3]) {
+		return true
+	}
+
+	return false
+}
+
+func (t *Table) getCardNumber(length, side string) int  {
+	intLength, _ := strconv.Atoi(length) // string to int
+	intSide, _ := strconv.Atoi(side) // string to int
+
+	card := t.field[intLength][intSide]
+
+	return card.number
 }

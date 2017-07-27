@@ -19,5 +19,13 @@ func main() {
 	history = append(history, "1 5 2 1")
 	history = append(history, "1 2 1 3")
 
-	B27.NewTable(2, 5, cards)
+	players := make(B27.Players)
+	players[0] = B27.NewPlayer()
+	players[1] = B27.NewPlayer()
+	players[2] = B27.NewPlayer()
+
+	t := *B27.NewTable(2, 5, cards)
+
+	g := B27.NewGame(t, players, history)
+	g.Boot()
 }
